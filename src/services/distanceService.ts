@@ -30,11 +30,7 @@ export class DistanceService {
             for (const shopLocation of shopLocations) {
                 const distance = await this.findDistance(location, shopLocation);
 
-                console.log(shopLocation);
-                console.log(distance);
-
                 if (distance < shortestDistance) {
-                    console.log("closest set");
                     closestShop = shopLocation;
                     shortestDistance = distance;
                 }
