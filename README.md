@@ -4,7 +4,7 @@
 I've opted with using the watson assistant framework, as it enables me to leverage the many tools included in the platform.
 
 ## NodeJS
-I've NodeJs as backend framework, as the watson API is well documented for node, and it enables me to integrate other API's as well.
+I've used NodeJs as backend framework, as the watson API is well documented for node, and it enables me to integrate other API's as well.
 
 ## Integrations
 
