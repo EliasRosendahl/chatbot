@@ -29,9 +29,18 @@ assistant.createSession({
 
 @Service()
 export class ChatbotService {
-    public async dialog(question: string): Promise<string> {
-        const response = await assistant.messageStateless({
+    public async createSession(): Promise<string> {
+        const watsonSession = await assistant.createSession({
+            assistantId: process.env.ASSISTANT_ID
+        });
+
+        return watsonSession.result.session_id;
+    }
+
+    public async dialog(question: string, sessionId: string): Promise<string> {
+        const response = await assistant.message({
             assistantId: process.env.ASSISTANT_ID,
+            sessionId: sessionId,
             input: {
               'message_type': 'text',
               'text': question,

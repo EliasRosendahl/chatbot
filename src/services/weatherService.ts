@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import dotenv from 'dotenv';
 import axios from 'axios';
 
+
 dotenv.config();
 
 const weatherEndpoint = 'https://api.openweathermap.org/data/2.5/weather?q=Aarhus&appid=' + process.env.OPENWEATHER_API_KEY;
