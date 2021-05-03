@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import Container from 'typedi';
 
 import { ChatbotService } from '../services/chatbotService';
 
@@ -11,10 +10,6 @@ declare module "express-session" {
 
 const router = Router();
 const chatbotService: ChatbotService = new ChatbotService();
-
-router.get('/', async(req, res) => {
-    res.send('Welcome to the chatbot');
-});
 
 router.post('/', async(req, res) => {
     let sessionId: string = req.session.sessionId;

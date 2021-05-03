@@ -1,12 +1,9 @@
-import { Service } from "typedi";
 import axios from 'axios';
 import { ShopsService } from "./shopsService";
-
 
 const shopsService: ShopsService = new ShopsService();
 
 
-@Service()
 export class DistanceService {
     private async findDistance(location: string, shop: string): Promise<number> {
         const distanceEndpoint = 'https://www.distance24.org/route.json?stops=' + location + '|' + shop;
