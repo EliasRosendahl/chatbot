@@ -1,9 +1,10 @@
 import { Service } from 'typedi';
 import dotenv from 'dotenv';
+import { WeatherService } from '../services/weatherService';
 
 dotenv.config();
 
-
+const weatherService: WeatherService = new WeatherService();
 const AssistantV2 = require('ibm-watson/assistant/v2');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -37,7 +38,16 @@ export class ChatbotService {
             }
         });
 
-        const resposeChatText = response.result.output.generic[0].text; 
-        return resposeChatText;
+        const responseOutput = response.result.output;
+
+        const intent = responseOutput.intents[0].intent;
+        let text = responseOutput.generic[0].text;
+
+        if (intent == 'Store_weather') {
+            const forecast = await weatherService.getForecast();
+            text += forecast;
+        }
+
+        return text;
     }
 }
