@@ -12,6 +12,10 @@ The project intergrates with the following services:
 
 api.openweathermap.org
 
+distance24.org
+
+api.eu-de.assistant.watson.cloud.ibm.com
+
 
 # Running the project
 ```npm install```
@@ -28,7 +32,7 @@ To interact with the chatbot, use the following endpoint
 
 * **URL**
 
-  /chatbot
+  host:3000/chatbot
 
 * **Method:**
   
