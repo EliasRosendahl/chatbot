@@ -1,10 +1,14 @@
 import { Service } from 'typedi';
 import dotenv from 'dotenv';
 import { WeatherService } from '../services/weatherService';
+import { DistanceService } from './distanceService';
+import { ShopsService } from './shopsService';
 
 dotenv.config();
 
 const weatherService: WeatherService = new WeatherService();
+const distanceService: DistanceService = new DistanceService();
+
 const AssistantV2 = require('ibm-watson/assistant/v2');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
@@ -37,24 +41,37 @@ export class ChatbotService {
         return watsonSession.result.session_id;
     }
 
-    public async dialog(question: string, sessionId: string): Promise<string> {
+    public async dialog(dialog: string, sessionId: string): Promise<string> {
         const response = await assistant.message({
             assistantId: process.env.ASSISTANT_ID,
             sessionId: sessionId,
             input: {
               'message_type': 'text',
-              'text': question,
+              'text': dialog,
             }
         });
 
         const responseOutput = response.result.output;
-
-        const intent = responseOutput.intents[0].intent;
         let text = responseOutput.generic[0].text;
+        
+        if (!responseOutput.intents[0]) {
+            return text;
+        }
+        
+        const intent = responseOutput.intents[0].intent;
 
-        if (intent == 'Store_weather') {
-            const forecast = await weatherService.getForecast();
+        if (intent == 'Collect_location' && text.includes('weather')) {
+            const location = dialog;
+            const closestShop = await distanceService.findClosestShop(location);
+            const forecast = await weatherService.getForecast(closestShop);
             text += forecast;
+        }
+
+        else if (intent == 'Collect_location' && text.includes('closest')) {
+            const location = dialog;
+            const closestShop = await distanceService.findClosestShop(location);
+
+            text += closestShop;
         }
 
         return text;
