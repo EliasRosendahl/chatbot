@@ -50,10 +50,9 @@ export class ChatbotService {
         let text = values[0];
         const intents = values[1];
 
-        if (!intents) {
+        if (!intents || intents.length == 0) {
             return text;
         }
-
         const intent = intents[0].intent;
 
         if (intent == 'Products_stock') {
@@ -61,7 +60,6 @@ export class ChatbotService {
             const stock = stockService.getStock();
             for (const item in stock) {
                 const quantity = stock[item];
-
                 text = text + item + ": " + quantity + '\n'
             }
         }
